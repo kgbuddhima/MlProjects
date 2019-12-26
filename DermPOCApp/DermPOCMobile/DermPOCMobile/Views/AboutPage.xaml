@@ -45,6 +45,17 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
+                <Label FontSize="22">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Prediction " FontAttributes="Bold" FontSize="22" />
+                                <Span Text=": " />
+                                <Span Text="{Binding PredictedDisease}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <!--<Label>
                     <Label.FormattedText>
                         <FormattedString>
