@@ -39,7 +39,7 @@ namespace DermPOCMobile.ViewModels
 
         public AboutViewModel()
         {
-            Title = "About";
+            Title = "Dermatology";
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://xamarin.com"));
             UploadImageCommand = new Command(async()=>await UploadImage());
             PredictCommand = new Command(async () => await PredictAsync());
@@ -53,32 +53,7 @@ namespace DermPOCMobile.ViewModels
         {
             try
             {
-                await PickProfilePictureAsync(CropImageIfNeedsAsync);
-
-               /* if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
-                {
-                    //DisplayAlert("No Camera", ":( No camera available.", "OK");
-                    return;
-                }
-
-                var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
-                { 
-                    Directory = "Sample",
-                    Name = $"test.jpg"
-                });
-
-                if (file == null)
-                    return;
-
-                
-
-                //await DisplayAlert("File Location", file.Path, "OK");
-
-                DermImage = ImageSource.FromStream(() =>
-                {
-                    var stream = file.GetStream();
-                    return stream;
-                });*/
+                await PickSkinPictureAsync(CropImageIfNeedsAsync);
             }
             catch (Exception ex)
             {
@@ -87,7 +62,7 @@ namespace DermPOCMobile.ViewModels
             await Task.CompletedTask;
         }
 
-        private static async Task PickProfilePictureAsync(Func<MediaFile, Task> picturePicked)
+        private static async Task PickSkinPictureAsync(Func<MediaFile, Task> picturePicked)
         {
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
