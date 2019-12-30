@@ -42,11 +42,17 @@ namespace DermPOCMobile.ViewModels
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://xamarin.com"));
             UploadImageCommand = new Command(async()=>await UploadImage());
             PredictCommand = new Command(async () => await PredictAsync());
+            CropImageCommand= new Command(async () => await CropImageAsync());
+            ResizeImageCommand = new Command(async () => await ResizeImageAsync());
         }
 
         public ICommand OpenWebCommand { get; }
         public ICommand UploadImageCommand { get; }
         public ICommand PredictCommand { get; }
+
+        public ICommand CropImageCommand { get; }
+
+        public ICommand ResizeImageCommand { get; }
 
         private async Task UploadImage()
         {
@@ -91,6 +97,32 @@ namespace DermPOCMobile.ViewModels
             DermImage =  ImageSource.FromStream(photo.GetStream);
             imagePath = Path.GetFileName(photo.Path);
 
+        }
+
+        private async Task CropImageAsync()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            await Task.CompletedTask;
+        }
+
+        private async Task ResizeImageAsync()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            await Task.CompletedTask;
         }
 
         private async Task PredictAsync() 
