@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Plugin.CurrentActivity;
+using Android.Content;
 
 namespace DermPOCMobile.Droid
 {
@@ -23,6 +24,10 @@ namespace DermPOCMobile.Droid
             global::Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
+
+            // ImageCropper init
+            Stormlion.ImageCropper.Droid.Platform.Init();
+
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             
             LoadApplication(new App());
@@ -32,6 +37,13 @@ namespace DermPOCMobile.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            Stormlion.ImageCropper.Droid.Platform.OnActivityResult(requestCode, resultCode, data);
         }
     }
 }

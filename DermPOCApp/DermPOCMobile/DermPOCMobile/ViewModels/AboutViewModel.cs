@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System.IO;
+using Stormlion.ImageCropper;
 
 namespace DermPOCMobile.ViewModels
 {
@@ -34,7 +35,16 @@ namespace DermPOCMobile.ViewModels
             }
         }
 
-        string imagePath = string.Empty;
+        string imagePath;
+        public string ImagePath
+        {
+            get => imagePath;
+            set
+            {
+                imagePath = value;
+                OnPropertyChanged(nameof(ImagePath));
+            }
+        }
 
         public AboutViewModel()
         {
@@ -44,6 +54,7 @@ namespace DermPOCMobile.ViewModels
             PredictCommand = new Command(async () => await PredictAsync());
             CropImageCommand= new Command(async () => await CropImageAsync());
             ResizeImageCommand = new Command(async () => await ResizeImageAsync());
+            CropImageDlToolKitCommand = new Command(async () => await CropImageDLToolKitAsync());
         }
 
         public ICommand OpenWebCommand { get; }
@@ -52,13 +63,15 @@ namespace DermPOCMobile.ViewModels
 
         public ICommand CropImageCommand { get; }
 
+        public ICommand CropImageDlToolKitCommand { get; }
+
         public ICommand ResizeImageCommand { get; }
 
         private async Task UploadImage()
         {
             try
             {
-                await PickSkinPictureAsync(CropImageIfNeedsAsync);
+                await PickSkinPictureAsync(SetImage);
             }
             catch (Exception ex)
             {
@@ -87,7 +100,7 @@ namespace DermPOCMobile.ViewModels
             }
         }
 
-        private async Task CropImageIfNeedsAsync(MediaFile photo)
+        private async Task SetImage(MediaFile photo)
         {
             if (photo == null)
             {
@@ -95,11 +108,24 @@ namespace DermPOCMobile.ViewModels
             }
 
             DermImage =  ImageSource.FromStream(photo.GetStream);
-            imagePath = Path.GetFileName(photo.Path);
+            ImagePath = Path.GetFileName(photo.Path);
 
         }
 
         private async Task CropImageAsync()
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            await Task.CompletedTask;
+        }
+
+        private async Task CropImageDLToolKitAsync()
         {
             try
             {

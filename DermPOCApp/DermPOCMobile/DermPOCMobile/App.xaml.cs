@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using DermPOCMobile.Services;
 using DermPOCMobile.Views;
+using Plugin.Media;
 
 namespace DermPOCMobile
 {
@@ -12,6 +13,7 @@ namespace DermPOCMobile
         public App()
         {
             InitializeComponent();
+            CrossMedia.Current.Initialize();
 
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DermPOCMobile.ViewModels;
+using Stormlion.ImageCropper;
+using System;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,6 +15,37 @@ namespace DermPOCMobile.Views
         public AboutPage()
         {
             InitializeComponent();
+        }
+
+        private void btnCrop_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                string imagepath = ((AboutViewModel)BindingContext).ImagePath;
+                new ImageCropper()
+                {
+                    Success = (imageFile) =>
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            imagepath = imageFile;
+                            ImageView.Source = ImageSource.FromFile(imageFile);
+
+                            if (imagepath != null)
+                            {
+
+                            }
+
+                        });
+                    }
+                }.Show(this);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }

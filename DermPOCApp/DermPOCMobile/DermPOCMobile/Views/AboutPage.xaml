@@ -7,11 +7,11 @@
              x:Class="DermPOCMobile.Views.AboutPage"
              xmlns:vm="clr-namespace:DermPOCMobile.ViewModels"
              Title="{Binding Title}">
-    
+
     <ContentPage.BindingContext>
         <vm:AboutViewModel />
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#2196F3</Color>
@@ -82,6 +82,7 @@
                     </Label.FormattedText>
                 </Label>-->
                 <Image
+                    x:Name="ImageView"
                     HorizontalOptions="FillAndExpand"
                     Aspect="AspectFit"
                     Source="{Binding DermImage}"/>
@@ -89,19 +90,37 @@
                         Command="{Binding OpenWebCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />-->
+
                 <Button Margin="0,10,0,0" 
                         Text="Upload Image"
                         Command="{Binding UploadImageCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />
+
+                <Label Text="Resize"/>
                 <Button Margin="0,10,0,0" Text="Resize"
                         Command="{Binding ResizeImageCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />
-                <Button Margin="0,10,0,0" Text="Crop"
-                        Command="{Binding CropImageCommand}"
+
+
+                <Label Text="ImageCropper.Forms"/>
+                <Button
+                    x:Name="btnCrop"
+                    Margin="0,10,0,0"
+                    Text="Crop ImageCropper"
+                    Clicked="btnCrop_Clicked"
+                    BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" />
+
+                <Label Text="DLToolkit Controls for Xamarin.Forms"/>
+                <Button
+                    x:Name="btnCropDLToolkit"
+                    Margin="0,10,0,0" Text="Crop DLToolkit"
+                    Command="{Binding CropImageDlToolKitCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />
+
                 <Button Margin="0,10,0,0" 
                         Text="Predict"
                         Command="{Binding PredictCommand}"
@@ -110,5 +129,5 @@
             </StackLayout>
         </ScrollView>
     </Grid>
-    
+
 </ContentPage>
