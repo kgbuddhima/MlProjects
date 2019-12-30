@@ -20,7 +20,7 @@ namespace DermPOCAppML.Model
             MLContext mlContext = new MLContext();
 
             // Load model & create prediction engine
-            string modelPath = AppDomain.CurrentDomain.BaseDirectory + "MLModel.zip"; // this should be changed
+            string modelPath = "MLModel.zip";// AppDomain.CurrentDomain.BaseDirectory + "MLModel.zip"; // this should be changed
             ITransformer mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
             var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
 

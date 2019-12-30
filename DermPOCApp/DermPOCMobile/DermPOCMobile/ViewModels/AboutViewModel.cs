@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using DermPOCAppML.Model;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System.IO;
@@ -98,16 +97,7 @@ namespace DermPOCMobile.ViewModels
         {
             try
             {
-                // Add input data
-                var input = new ModelInput();
-                input.ImageSource = imagePath;
-
-                // Load model and predict output of sample data
-                ModelOutput result = ConsumeModel.Predict(input);
-                if (result != null)
-                {
-                    PredictedDisease =  result.Prediction;
-                }
+                
             }
             catch (Exception ex)
             {
