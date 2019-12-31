@@ -158,5 +158,14 @@ namespace DermPOCAppML.ConsoleApp
             double confidenceInterval95 = 1.96 * CalculateStandardDeviation(values) / Math.Sqrt((values.Count() - 1));
             return confidenceInterval95;
         }
+
+
+        public static void test() 
+        {
+           ModelOutput outputResult =  ConsumeModel.Predict(new ModelInput() 
+            {
+            ImageSource="C://something/ddd.jpg"
+            });
+        }
     }
 }

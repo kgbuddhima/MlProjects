@@ -8,11 +8,25 @@ using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System.IO;
 using Stormlion.ImageCropper;
+using DermPOCMobile.Services;
+using System.Threading;
+using FFImageLoading;
 
 namespace DermPOCMobile.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {
+        Stream _dermImageStream;
+        public Stream DermImageStream
+        {
+            get => _dermImageStream;
+            set
+            {
+                _dermImageStream = value;
+                OnPropertyChanged(nameof(DermImageStream));
+            }
+        }
+
         ImageSource _dermImage;
         public ImageSource DermImage
         {
@@ -43,6 +57,17 @@ namespace DermPOCMobile.ViewModels
             {
                 imagePath = value;
                 OnPropertyChanged(nameof(ImagePath));
+            }
+        }
+
+        string _result;
+        public string Result
+        {
+            get => _result;
+            set
+            {
+                _result = value;
+                OnPropertyChanged(nameof(Result));
             }
         }
 
@@ -107,7 +132,8 @@ namespace DermPOCMobile.ViewModels
                 return;
             }
 
-            DermImage =  ImageSource.FromStream(photo.GetStream);
+            _dermImageStream = photo.GetStream();
+            DermImage =  ImageSource.FromFile(photo.Path);
             ImagePath = Path.GetFileName(photo.Path);
 
         }
@@ -151,17 +177,48 @@ namespace DermPOCMobile.ViewModels
             await Task.CompletedTask;
         }
 
-        private async Task PredictAsync() 
+        private async Task PredictAsync()
         {
             try
             {
-                
+                var service = DependencyService.Get<IPhotoDetector>();
+                if (service == null)
+                {
+                    Console.WriteLine("Info", "Not implemented the feature on your device.", "OK");
+                    return;
+                }
+
+                var result = await service.DetectAsync(_dermImageStream);
+                Result = result;
+                Console.WriteLine($"It looks like a {result}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Result = string.Empty;
             }
             await Task.CompletedTask;
+        }
+
+        private async Task<Stream> GetStreamFromImageSourceAsync(StreamImageSource imageSource, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (imageSource.Stream != null)
+            {
+                return await imageSource.Stream(cancellationToken);
+            }
+            return null;
+        }
+
+        private async Task<Stream> ResizeImageAsync(byte[] imageBytes, int width = 224, int height = 224)
+        {
+            FFImageLoading.Work.TaskParameter result = ImageService.Instance.LoadStream(token =>
+            {
+                TaskCompletionSource<Stream> tcs = new TaskCompletionSource<Stream>();
+                tcs.TrySetResult(new MemoryStream(imageBytes));
+                return tcs.Task;
+            }).DownSample(width, height);
+
+            return await result.AsJPGStreamAsync();
         }
 
     }

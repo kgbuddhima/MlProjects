@@ -1,7 +1,10 @@
 ﻿using DermPOCMobile.ViewModels;
+using FFImageLoading.Forms;
 using Stormlion.ImageCropper;
 using System;
 using System.ComponentModel;
+using System.IO;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -33,7 +36,12 @@ namespace DermPOCMobile.Views
 
                             if (imagepath != null)
                             {
+                                ((AboutViewModel)BindingContext).ImagePath = imageFile;
 
+                                byte[] data = File.ReadAllBytes(imageFile);
+                                Stream stream = new MemoryStream(data);
+
+                                ((AboutViewModel)BindingContext).DermImageStream = stream;
                             }
 
                         });
@@ -47,5 +55,6 @@ namespace DermPOCMobile.Views
                 throw;
             }
         }
+
     }
 }
