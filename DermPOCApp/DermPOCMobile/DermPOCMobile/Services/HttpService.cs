@@ -31,19 +31,19 @@ namespace DermPOCMobile.Services
                 /*var json = JsonConvert.SerializeObject(image);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");*/
 
-                string boundary = "---8d0f01e6b3b5dafaaadaada";
-                MultipartFormDataContent lContent = new MultipartFormDataContent(boundary);
-                ByteArrayContent lFileContent = new ByteArrayContent(image);
-                lFileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
-                lFileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                //string boundary = "---8d0f01e6b3b5dafaaadaada";
+                MultipartFormDataContent multipartFormDataContent = new MultipartFormDataContent();
+                ByteArrayContent byteArrayContent = new ByteArrayContent(image);
+                byteArrayContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
+                byteArrayContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
                 {
                     FileName = "imgFile.jpg",
                     Name = "imgFile"
                 };
-                lContent.Add(lFileContent);
+                multipartFormDataContent.Add(byteArrayContent);
 
 
-                response = await _client.PostAsync(uri, lContent);
+                response = await _client.PostAsync(uri, multipartFormDataContent);
 
                 if (response.IsSuccessStatusCode)
                 {
