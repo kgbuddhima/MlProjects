@@ -7,6 +7,6 @@ namespace DermPOCMobile.Services
 {
     public interface IHttpService
     {
-        Task<string> PredictImageAsync(byte[] image);
+        Task<string> PredictImageAsync(byte[] image, string filepath);
     }
 }

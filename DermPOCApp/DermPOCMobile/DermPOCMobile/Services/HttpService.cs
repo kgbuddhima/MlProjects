@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace DermPOCMobile.Services
 {
@@ -13,24 +16,51 @@ namespace DermPOCMobile.Services
         HttpClient _client;
         public HttpService()
         {
-            _client = new HttpClient();
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+            _client = new HttpClient(handler);
         }
 
-        public async Task<string> PredictImageAsync(byte[] image)
+        public async Task<string> PredictImageAsync(byte[] image,string filepath)
         {
-            var uri = new Uri(string.Format("someUrl", string.Empty));
-
-            var json = JsonConvert.SerializeObject(image);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await _client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
+            HttpResponseMessage response = null;
+            try
             {
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-                Debug.WriteLine(response.Content.ReadAsStringAsync());
-            }
+                var uri = new Uri(string.Format("https://10.0.2.2:5001/api/predict", string.Empty));
 
+                /*var json = JsonConvert.SerializeObject(image);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");*/
+
+                string boundary = "---8d0f01e6b3b5dafaaadaada";
+                MultipartFormDataContent lContent = new MultipartFormDataContent(boundary);
+                ByteArrayContent lFileContent = new ByteArrayContent(image);
+                lFileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
+                lFileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    FileName = "imgFile.jpg",
+                    Name = "imgFile"
+                };
+                lContent.Add(lFileContent);
+
+
+                response = await _client.PostAsync(uri, lContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine(@"\tTodoItem successfully saved.");
+                    Debug.WriteLine(response.Content.ReadAsStringAsync());
+                }
+
+            }
+            catch (HttpRequestException ex) 
+            {
+            
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
             return await response.Content.ReadAsStringAsync();
         }
     }

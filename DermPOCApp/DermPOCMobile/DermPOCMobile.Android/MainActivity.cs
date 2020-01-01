@@ -9,6 +9,7 @@ using Android.OS;
 using Plugin.CurrentActivity;
 using Android.Content;
 using FFImageLoading.Forms.Platform;
+using System.Net;
 
 namespace DermPOCMobile.Droid
 {
@@ -32,7 +33,10 @@ namespace DermPOCMobile.Droid
             CachedImageRenderer.Init(enableFastRenderer: true);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            
+
+            // http certificate configurations
+            ServicePointManager.ServerCertificateValidationCallback += (o, cert, chain, errors) => true;
+
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

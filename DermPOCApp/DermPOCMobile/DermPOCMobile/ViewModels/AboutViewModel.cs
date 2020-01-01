@@ -160,7 +160,7 @@ namespace DermPOCMobile.ViewModels
         {
             try
             {
-               await service.PredictImageAsync(_dermImageStream.ToByteArray());
+               await service.PredictImageAsync(_dermImageStream.ToByteArray(), imagePath);
             }
             catch (Exception ex)
             {
