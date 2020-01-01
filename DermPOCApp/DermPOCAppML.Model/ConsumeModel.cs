@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.ML;
 using DermPOCAppML.Model;
+using System.IO;
+using System.Reflection;
 
 namespace DermPOCAppML.Model
 {
@@ -20,7 +22,8 @@ namespace DermPOCAppML.Model
             MLContext mlContext = new MLContext();
 
             // Load model & create prediction engine
-            string modelPath = "MLModel.zip";// AppDomain.CurrentDomain.BaseDirectory + "MLModel.zip"; // this should be changed
+            string modelPathLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string modelPath = Path.Combine(modelPathLocation, "MLModel.zip");
             ITransformer mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
             var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
 

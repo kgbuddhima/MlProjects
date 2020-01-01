@@ -19,5 +19,8 @@
     <PackageReference Include="Microsoft.ML.Vision" Version="1.4.0" />
 	<PackageReference Include="SciSharp.TensorFlow.Redist" Version="1.14.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\DermPOC.Shared.csproj" />
+  </ItemGroup>
   
 </Project>

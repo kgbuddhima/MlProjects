@@ -11,7 +11,7 @@ namespace DermPOCAppML.ConsoleApp
     class Program
     {
         //Dataset to use for predictions 
-        private const string DATA_FILEPATH = @"C:\Users\kgbud\AppData\Local\Temp\bc6fd981-eaa4-481f-8452-eccd42ab9adb.tsv";
+        private const string DATA_FILEPATH = @"D:\MLPrj\Images.tsv";
 
         static void Main(string[] args)
         {
