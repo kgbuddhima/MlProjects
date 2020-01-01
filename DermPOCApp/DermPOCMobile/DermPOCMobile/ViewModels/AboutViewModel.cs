@@ -193,7 +193,7 @@ namespace DermPOCMobile.ViewModels
                     return;
                 }
 
-                var result = await service.DetectAsync(_dermImageStream);
+                var result = await service.DetectAsync(await ResizeImageAsync(_dermImageStream.ToByteArray()));
                 Result = result;
                 Console.WriteLine($"It looks like a {result}");
             }
