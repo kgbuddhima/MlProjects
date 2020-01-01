@@ -7,6 +7,7 @@ namespace DermPOCAppML.Model
 {
     public class ModelOutput
     {
+        [ColumnName("PredictedLabel")]
         public String Prediction { get; set; }
         public float[] Score { get; set; }
     }
