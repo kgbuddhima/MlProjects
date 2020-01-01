@@ -22,4 +22,8 @@
   <ItemGroup>
     <Folder Include="Controls\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\DermPOC.Shared.csproj" />
+  </ItemGroup>
 </Project>

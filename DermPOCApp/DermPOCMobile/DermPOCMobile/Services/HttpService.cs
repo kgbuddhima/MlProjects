@@ -35,7 +35,7 @@ namespace DermPOCMobile.Services
                 MultipartFormDataContent multipartFormDataContent = new MultipartFormDataContent();
                 ByteArrayContent byteArrayContent = new ByteArrayContent(image);
                 byteArrayContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
-                byteArrayContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                byteArrayContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
                     FileName = "imgFile.jpg",
                     Name = "image"

@@ -11,6 +11,8 @@ using Stormlion.ImageCropper;
 using DermPOCMobile.Services;
 using System.Threading;
 using FFImageLoading;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace DermPOCMobile.ViewModels
 {
@@ -63,14 +65,14 @@ namespace DermPOCMobile.ViewModels
             }
         }
 
-        string _result;
-        public string Result
+        bool isNotProcessing;
+        public bool IsNotProcessing
         {
-            get => _result;
+            get => isNotProcessing;
             set
             {
-                _result = value;
-                OnPropertyChanged(nameof(Result));
+                isNotProcessing = value;
+                OnPropertyChanged(nameof(IsNotProcessing));
             }
         }
 
@@ -78,13 +80,15 @@ namespace DermPOCMobile.ViewModels
         {
             service = DependencyService.Get<IHttpService>();
 
-            Title = "Dermatology";
+            Title = "Dermatology POC";
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://xamarin.com"));
             UploadImageCommand = new Command(async()=>await UploadImage());
             PredictCommand = new Command(async () => await PredictAsync());
             CropImageCommand= new Command(async () => await CropImageAsync());
             ResizeImageCommand = new Command(async () => await ResizeImageAsync());
             PredictUsingApiCommand = new Command(async () => await PredictUsingApiAsync());
+
+            IsNotProcessing = true;
         }
 
         public ICommand OpenWebCommand { get; }
@@ -160,13 +164,29 @@ namespace DermPOCMobile.ViewModels
         {
             try
             {
-               await service.PredictImageAsync(_dermImageStream.ToByteArray(), imagePath);
+                IsBusy = true;
+                IsNotProcessing = false;
+                PredictedDisease = string.Empty;
+
+                string result = await service.PredictImageAsync(_dermImageStream.ToByteArray(), imagePath);
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    Shared.Predict.Result prediction = JsonConvert.DeserializeObject<Shared.Predict.Result>(result);
+                    if (prediction != null)
+                    {
+                        PredictedDisease = prediction.Results.FirstOrDefault().Prediction;
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            await Task.CompletedTask;
+            finally 
+            {
+                IsBusy = false;
+                IsNotProcessing = true;
+            }
         }
 
         private async Task ResizeImageAsync()
@@ -186,7 +206,8 @@ namespace DermPOCMobile.ViewModels
         {
             try
             {
-                var service = DependencyService.Get<IPhotoDetector>();
+                PredictedDisease = string.Empty;
+                   var service = DependencyService.Get<IPhotoDetector>();
                 if (service == null)
                 {
                     Console.WriteLine("Info", "Not implemented the feature on your device.", "OK");
@@ -194,13 +215,13 @@ namespace DermPOCMobile.ViewModels
                 }
 
                 var result = await service.DetectAsync(await ResizeImageAsync(_dermImageStream.ToByteArray()));
-                Result = result;
+                PredictedDisease = result;
                 Console.WriteLine($"It looks like a {result}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Result = string.Empty;
+                PredictedDisease = string.Empty;
             }
             await Task.CompletedTask;
         }
