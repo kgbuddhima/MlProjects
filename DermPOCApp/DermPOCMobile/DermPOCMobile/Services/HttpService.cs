@@ -38,7 +38,7 @@ namespace DermPOCMobile.Services
                 byteArrayContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
                 {
                     FileName = "imgFile.jpg",
-                    Name = "imgFile"
+                    Name = "image"
                 };
                 multipartFormDataContent.Add(byteArrayContent);
 
