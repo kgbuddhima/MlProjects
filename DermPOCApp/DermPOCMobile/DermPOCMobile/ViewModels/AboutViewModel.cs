@@ -16,6 +16,9 @@ namespace DermPOCMobile.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {
+
+        IHttpService service;
+
         Stream _dermImageStream;
         public Stream DermImageStream
         {
@@ -73,22 +76,24 @@ namespace DermPOCMobile.ViewModels
 
         public AboutViewModel()
         {
+            service = DependencyService.Get<IHttpService>();
+
             Title = "Dermatology";
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://xamarin.com"));
             UploadImageCommand = new Command(async()=>await UploadImage());
             PredictCommand = new Command(async () => await PredictAsync());
             CropImageCommand= new Command(async () => await CropImageAsync());
             ResizeImageCommand = new Command(async () => await ResizeImageAsync());
-            CropImageDlToolKitCommand = new Command(async () => await CropImageDLToolKitAsync());
+            PredictUsingApiCommand = new Command(async () => await PredictUsingApiAsync());
         }
 
         public ICommand OpenWebCommand { get; }
         public ICommand UploadImageCommand { get; }
         public ICommand PredictCommand { get; }
 
-        public ICommand CropImageCommand { get; }
+        public ICommand PredictUsingApiCommand { get; }
 
-        public ICommand CropImageDlToolKitCommand { get; }
+        public ICommand CropImageCommand { get; }
 
         public ICommand ResizeImageCommand { get; }
 
@@ -151,11 +156,11 @@ namespace DermPOCMobile.ViewModels
             await Task.CompletedTask;
         }
 
-        private async Task CropImageDLToolKitAsync()
+        private async Task PredictUsingApiAsync()
         {
             try
             {
-
+               await service.PredictImageAsync(_dermImageStream.ToByteArray());
             }
             catch (Exception ex)
             {
@@ -188,7 +193,7 @@ namespace DermPOCMobile.ViewModels
                     return;
                 }
 
-                var result = await service.DetectAsync(_dermImageStream);
+                var result = await service.DetectAsync(await ResizeImageAsync(_dermImageStream.ToByteArray()));
                 Result = result;
                 Console.WriteLine($"It looks like a {result}");
             }
