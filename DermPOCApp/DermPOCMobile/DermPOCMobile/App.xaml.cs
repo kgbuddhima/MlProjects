@@ -13,6 +13,10 @@ namespace DermPOCMobile
         public App()
         {
             InitializeComponent();
+
+            // register services
+            DependencyService.Register<IHttpService, HttpService>();
+
             CrossMedia.Current.Initialize();
 
             DependencyService.Register<MockDataStore>();
