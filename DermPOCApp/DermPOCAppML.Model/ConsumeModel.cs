@@ -8,6 +8,9 @@ using Microsoft.ML;
 using DermPOCAppML.Model;
 using System.IO;
 using System.Reflection;
+using Microsoft.ML.Data;
+using Shared.Predict;
+using DermPOC.Shared.Predict;
 
 namespace DermPOCAppML.Model
 {
@@ -15,9 +18,8 @@ namespace DermPOCAppML.Model
     {
         // For more info on consuming ML.NET models, visit https://aka.ms/model-builder-consume
         // Method for consuming model in your app
-        public static ModelOutput Predict(ModelInput input)
+        public static Result Predict(ModelInput input)
         {
-
             // Create new MLContext
             MLContext mlContext = new MLContext();
 
@@ -28,8 +30,37 @@ namespace DermPOCAppML.Model
             var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
 
             // Use model to make prediction on input data
-            ModelOutput result = predEngine.Predict(input);
-            return result;
+            ModelOutput predictionResult = predEngine.Predict(input);
+
+            // Show score of each area ordered by score desc
+            var scoreEntries = GetScoresWithLabelsSorted(predEngine.OutputSchema, "Score", predictionResult.Score);
+
+            return new Result()
+            {
+                Results = scoreEntries
+            };
+        }
+
+        // https://github.com/dotnet/docs/issues/14265#issue-490516105
+        private static List<SingleLabelResult> GetScoresWithLabelsSorted(DataViewSchema schema, string name, float[] scores)
+        {
+            List<SingleLabelResult> result = new List<SingleLabelResult>();
+
+            var column = schema.GetColumnOrNull(name);
+
+            var slotNames = new VBuffer<ReadOnlyMemory<char>>();
+            column.Value.GetSlotNames(ref slotNames);
+            var names = new string[slotNames.Length];
+            var num = 0;
+            foreach (var denseValue in slotNames.DenseValues())
+            {
+                result.Add(new SingleLabelResult()
+                {
+                    Label = denseValue.ToString(),
+                    Score = scores[num++]
+                });
+            }
+            return result.OrderByDescending(c => c.Score).ToList();
         }
     }
 }

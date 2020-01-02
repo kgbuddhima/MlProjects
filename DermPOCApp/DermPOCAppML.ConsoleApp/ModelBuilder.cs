@@ -162,10 +162,10 @@ namespace DermPOCAppML.ConsoleApp
 
         public static void test() 
         {
-           ModelOutput outputResult =  ConsumeModel.Predict(new ModelInput() 
-            {
-            ImageSource="C://something/ddd.jpg"
-            });
+           //ModelOutput outputResult =  ConsumeModel.Predict(new ModelInput() 
+           // {
+           // ImageSource="C://something/ddd.jpg"
+           // });
         }
     }
 }

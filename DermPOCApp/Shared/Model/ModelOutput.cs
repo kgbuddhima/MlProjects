@@ -9,6 +9,8 @@ namespace DermPOCAppML.Model
     {
         [ColumnName("PredictedLabel")]
         public String Prediction { get; set; }
+
+        [ColumnName("Score")]
         public float[] Score { get; set; }
     }
 }

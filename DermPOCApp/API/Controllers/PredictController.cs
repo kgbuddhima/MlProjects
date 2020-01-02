@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Abp.UI;
+using DermPOC.Shared.Predict;
 using DermPOCAppML.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -58,14 +59,6 @@ namespace API.Controllers
 
             var prediction = ConsumeModel.Predict(modelInput);
 
-            var output = new Shared.Predict.Result()
-            {
-                Results = new List<ModelOutput>
-                {
-                    prediction
-                }
-            }; //in future, order the predictions in descending order of Score
-
             _logger.LogInformation($"Deleting temp file {tempFileName}");
             bool deleteResult = Files.Delete(tempFolder, tempFileName);
 
@@ -74,7 +67,7 @@ namespace API.Controllers
                 _logger.LogError($"Error deleting temp file {tempFileName}");
             }
 
-            return output;
+            return prediction;
         }
     }
 }

@@ -176,7 +176,7 @@ namespace DermPOCMobile.ViewModels
                         Shared.Predict.Result prediction = JsonConvert.DeserializeObject<Shared.Predict.Result>(result);
                         if (prediction != null)
                         {
-                            PredictedDisease = prediction.Results.FirstOrDefault().Prediction;
+                            PredictedDisease = prediction.Results.FirstOrDefault().Label;
                         }
                     }
                 },"Prediction inprogress...");

@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.ML;
 using DermPOCAppML.Model;
 using System.Collections.Generic;
+using Shared.Predict;
 
 namespace DermPOCAppML.ConsoleApp
 {
@@ -22,11 +23,11 @@ namespace DermPOCAppML.ConsoleApp
             foreach (ModelInput m in sampleData)
             {
                 // Make a single prediction on the sample data and print results
-                ModelOutput predictionResult = ConsumeModel.Predict(m);
+                Result predictionResult = ConsumeModel.Predict(m);
 
                 Console.WriteLine("Using model to make single prediction -- Comparing actual Label with predicted Label from sample data...\n\n");
                 Console.WriteLine($"ImageSource: {m.ImageSource}");
-                Console.WriteLine($"\n\nActual Label: {m.Label} \nPredicted Label value {predictionResult.Prediction} \nPredicted Label scores: [{String.Join(",", predictionResult.Score)}]\n\n");
+                Console.WriteLine($"\n\nActual Label: {m.Label} \nPredicted Label value {predictionResult.Results.FirstOrDefault().Label} \nPredicted Label scores: [{String.Join(",", predictionResult.Results.FirstOrDefault().Score)}]\n\n");
             }
             
             
