@@ -83,6 +83,29 @@
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />
 
+                <ListView
+                    Margin="10"
+                    ItemsSource="{Binding PredictionList}"
+                    HasUnevenRows="False">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Label}" FontAttributes="Bold"/>
+                                                <Span Text=" : "/>
+                                                <Span Text="{Binding Score}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
                 <!--<Button Margin="0,10,0,0" Text="Learn more"
                         Command="{Binding OpenWebCommand}"
                         BackgroundColor="{StaticResource Primary}"

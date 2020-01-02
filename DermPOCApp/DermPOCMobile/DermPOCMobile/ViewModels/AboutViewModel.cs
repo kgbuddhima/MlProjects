@@ -13,6 +13,8 @@ using System.Threading;
 using FFImageLoading;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Collections.Generic;
+using DermPOC.Shared.Predict;
 
 namespace DermPOCMobile.ViewModels
 {
@@ -73,6 +75,17 @@ namespace DermPOCMobile.ViewModels
             {
                 isNotProcessing = value;
                 OnPropertyChanged(nameof(IsNotProcessing));
+            }
+        }
+
+        List<SingleLabelResult> _predictionList;
+        public List<SingleLabelResult> PredictionList
+        {
+            get => _predictionList;
+            set
+            {
+                _predictionList = value;
+                OnPropertyChanged(nameof(PredictionList));
             }
         }
 
@@ -176,10 +189,11 @@ namespace DermPOCMobile.ViewModels
                         Shared.Predict.Result prediction = JsonConvert.DeserializeObject<Shared.Predict.Result>(result);
                         if (prediction != null)
                         {
-                            PredictedDisease = prediction.Results.FirstOrDefault().Label;
+                            PredictionList = prediction.Results.OrderByDescending(o=>o.Score).ToList();
+                            PredictedDisease = _predictionList.OrderByDescending(o => o.Score).FirstOrDefault().Label;
                         }
                     }
-                },"Prediction inprogress...");
+                }, "Prediction inprogress...");
             }
             catch (Exception ex)
             {
