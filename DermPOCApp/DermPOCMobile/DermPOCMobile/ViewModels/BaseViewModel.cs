@@ -7,6 +7,8 @@ using Xamarin.Forms;
 
 using DermPOCMobile.Models;
 using DermPOCMobile.Services;
+using System.Threading.Tasks;
+using Acr.UserDialogs;
 
 namespace DermPOCMobile.ViewModels
 {
@@ -26,6 +28,27 @@ namespace DermPOCMobile.ViewModels
         {
             get { return title; }
             set { SetProperty(ref title, value); }
+        }
+
+        public async Task SetBusyAsync(Func<Task> func, string loadingMessage = null)
+        {
+            if (loadingMessage == null)
+            {
+                loadingMessage = $"Loading...";
+            }
+
+            UserDialogs.Instance.ShowLoading(loadingMessage, MaskType.None);
+            IsBusy = true;
+
+            try
+            {
+                await func();
+            }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
+                IsBusy = false;
+            }
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,

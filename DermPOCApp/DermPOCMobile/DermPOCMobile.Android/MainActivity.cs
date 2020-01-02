@@ -10,6 +10,7 @@ using Plugin.CurrentActivity;
 using Android.Content;
 using FFImageLoading.Forms.Platform;
 using System.Net;
+using Acr.UserDialogs;
 
 namespace DermPOCMobile.Droid
 {
@@ -31,6 +32,7 @@ namespace DermPOCMobile.Droid
             Stormlion.ImageCropper.Droid.Platform.Init();
 
             CachedImageRenderer.Init(enableFastRenderer: true);
+            UserDialogs.Init(this);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 

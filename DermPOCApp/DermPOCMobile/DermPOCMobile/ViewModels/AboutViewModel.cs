@@ -164,25 +164,28 @@ namespace DermPOCMobile.ViewModels
         {
             try
             {
-                IsBusy = true;
-                IsNotProcessing = false;
-                PredictedDisease = string.Empty;
-
-                string result = await service.PredictImageAsync(_dermImageStream.ToByteArray(), imagePath);
-                if (!string.IsNullOrWhiteSpace(result))
+                await SetBusyAsync(async () =>
                 {
-                    Shared.Predict.Result prediction = JsonConvert.DeserializeObject<Shared.Predict.Result>(result);
-                    if (prediction != null)
+                    IsBusy = true;
+                    IsNotProcessing = false;
+                    PredictedDisease = string.Empty;
+
+                    string result = await service.PredictImageAsync(_dermImageStream.ToByteArray(), imagePath);
+                    if (!string.IsNullOrWhiteSpace(result))
                     {
-                        PredictedDisease = prediction.Results.FirstOrDefault().Prediction;
+                        Shared.Predict.Result prediction = JsonConvert.DeserializeObject<Shared.Predict.Result>(result);
+                        if (prediction != null)
+                        {
+                            PredictedDisease = prediction.Results.FirstOrDefault().Prediction;
+                        }
                     }
-                }
+                },"Prediction inprogress...");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            finally 
+            finally
             {
                 IsBusy = false;
                 IsNotProcessing = true;
