@@ -36,18 +36,13 @@ namespace DermPOCMobile.Views
 
                             if (imagepath != null)
                             {
-                                ((AboutViewModel)BindingContext).ImagePath = imageFile;
-
-                                byte[] data = File.ReadAllBytes(imageFile);
-                                Stream stream = new MemoryStream(data);
-
-                                ((AboutViewModel)BindingContext).DermImageStream = stream;
+                                ((AboutViewModel)BindingContext).ImagePath = imageFile;                                
+                                ((AboutViewModel)BindingContext).PredictUsingApiCommand.Execute(null);
                             }
 
                         });
                     }
                 }.Show(this);
-
             }
             catch (Exception ex)
             {

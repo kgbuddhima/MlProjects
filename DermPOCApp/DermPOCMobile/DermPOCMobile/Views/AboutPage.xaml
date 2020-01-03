@@ -8,6 +8,7 @@
              xmlns:vm="clr-namespace:DermPOCMobile.ViewModels"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:converters="clr-namespace:DermPOCMobile.Converters;assembly=DermPOCMobile"
              Title="{Binding Title}"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{DynamicResource BackgroundColorStyled}">
@@ -50,7 +51,7 @@
                     HasShadow="False">
                     <ffimageloading:CachedImage
                         x:Name="ImageView"    
-                        HeightRequest="300"
+                        HeightRequest="250"
                         HorizontalOptions="FillAndExpand" 
                         VerticalOptions="Center"
                         Aspect="Fill"
@@ -97,24 +98,29 @@
                     BackgroundColor="{DynamicResource Primary}"
                     TextColor="White" />
                 
-                <Button Margin="0,10,0,20" 
+                <!--<Button Margin="0,10,0,20" 
                         Text="Predict"
                         Command="{Binding PredictUsingApiCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" 
-                        IsEnabled="{Binding IsNotProcessing}"/>
+                        IsEnabled="{Binding IsNotProcessing}"/>-->
 
                 <!--<Button Margin="0,10,0,0" 
                         Text="Predict"
                         Command="{Binding PredictCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />-->
-
+                <BoxView
+                    HeightRequest="1"
+                    Margin="0,10,0,10"
+                    BackgroundColor="{DynamicResource SeparatorLineColor}"/>
+                
                 <Label 
-                    FontSize="14"
+                    FontSize="18"
+                    FontAttributes="Bold"
                     HorizontalOptions="Center"
                     HorizontalTextAlignment="Center"
-                    Text="Probabilities" 
+                    Text="Possible skin conditions" 
                     TextColor="{DynamicResource LightTextColor}"/>
                 <ListView
                     Margin="10"
@@ -124,9 +130,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout
-                                    Spacing="0"
-                                    Padding="0">
+                                <Grid>
                                     <Label 
                                         TextColor="{DynamicResource TextColor}"
                                         FontSize="14">
@@ -134,11 +138,11 @@
                                             <FormattedString>
                                                 <Span Text="{Binding Label}" FontAttributes="Bold"/>
                                                 <Span Text=" : "/>
-                                                <Span Text="{Binding Score}"/>
+                                                <Span Text="{Binding Score,Converter={converters:FloatToPrecentageStringConverter}}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                </StackLayout>
+                                </Grid>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>

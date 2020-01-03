@@ -189,6 +189,10 @@ namespace DermPOCMobile.ViewModels
         {
             try
             {
+                byte[] data = File.ReadAllBytes(imagePath);
+                Stream stream = new MemoryStream(data);
+                DermImageStream = stream;
+
                 await SetBusyAsync(async () =>
                 {
                     IsBusy = true;
@@ -201,6 +205,7 @@ namespace DermPOCMobile.ViewModels
                         Shared.Predict.Result prediction = JsonConvert.DeserializeObject<Shared.Predict.Result>(result);
                         if (prediction != null)
                         {
+                            1.ToString("");
                             PredictionList = prediction.Results.OrderByDescending(o=>o.Score).ToList();
                             PredictedDisease = _predictionList.OrderByDescending(o => o.Score).FirstOrDefault().Label;
                             IsPredictionAvailable = !string.IsNullOrWhiteSpace(_predictedDisease);
