@@ -78,6 +78,17 @@ namespace DermPOCMobile.ViewModels
             }
         }
 
+        bool isPredictionAvailable;
+        public bool IsPredictionAvailable
+        {
+            get => isPredictionAvailable;
+            set
+            {
+                isPredictionAvailable = value;
+                OnPropertyChanged(nameof(IsPredictionAvailable));
+            }
+        }
+
         List<SingleLabelResult> _predictionList;
         public List<SingleLabelResult> PredictionList
         {
@@ -102,6 +113,7 @@ namespace DermPOCMobile.ViewModels
             PredictUsingApiCommand = new Command(async () => await PredictUsingApiAsync());
 
             IsNotProcessing = true;
+            DermImage = "EmptyImage.png";
         }
 
         public ICommand OpenWebCommand { get; }
@@ -182,7 +194,7 @@ namespace DermPOCMobile.ViewModels
                     IsBusy = true;
                     IsNotProcessing = false;
                     PredictedDisease = string.Empty;
-
+                    IsPredictionAvailable = false;
                     string result = await service.PredictImageAsync(_dermImageStream.ToByteArray(), imagePath);
                     if (!string.IsNullOrWhiteSpace(result))
                     {
@@ -191,6 +203,7 @@ namespace DermPOCMobile.ViewModels
                         {
                             PredictionList = prediction.Results.OrderByDescending(o=>o.Score).ToList();
                             PredictedDisease = _predictionList.OrderByDescending(o => o.Score).FirstOrDefault().Label;
+                            IsPredictionAvailable = !string.IsNullOrWhiteSpace(_predictedDisease);
                         }
                     }
                 }, "Prediction inprogress...");

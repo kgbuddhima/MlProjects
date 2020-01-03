@@ -6,6 +6,16 @@
              mc:Ignorable="d"
              x:Class="DermPOCMobile.App">
     <Application.Resources>
-        
+        <ResourceDictionary>
+            <Color x:Key="Primary">#3CCC48</Color>
+            <Color x:Key="Accent">#41E14F</Color>
+            <Color x:Key="BackgroundColorStyled">#DEFCE0</Color>
+            <Color x:Key="BorderColor">#07350A</Color>
+            <Color x:Key="LightTextColor">#3FAF48</Color>
+            <Color x:Key="TextColor">#000000</Color>
+            <Color x:Key="TextColorWarning">#8F0903</Color>
+            <Color x:Key="TextColorHighlight">#025909</Color>
+            <Color x:Key="SeparatorLineColor">#025909</Color>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
