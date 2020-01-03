@@ -6,10 +6,13 @@
              mc:Ignorable="d"
              x:Class="DermPOCMobile.Views.AboutPage"
              xmlns:vm="clr-namespace:DermPOCMobile.ViewModels"
-             Title="{Binding Title}">
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.BindingContext>
-        <vm:AboutViewModel />
+        <vm:AboutViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
@@ -25,15 +28,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!--<StackLayout BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                <ContentView Padding="0,40,0,40" VerticalOptions="FillAndExpand">
-                    <Image Source="xamarin_logo.png" VerticalOptions="Center" HeightRequest="64" />
-                </ContentView>
-            </StackLayout>
-        </StackLayout>-->
         <ScrollView Grid.Row="1">
-            <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
+            <StackLayout Orientation="Vertical" Padding="20" Spacing="10">
                 <Label FontSize="22">
                     <Label.FormattedText>
                         <FormattedString>
@@ -56,11 +52,24 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Image
+                
+                <!--<Image
                     x:Name="ImageView"
                     HorizontalOptions="FillAndExpand"
                     Aspect="AspectFit"
-                    Source="{Binding DermImage}"/>
+                    Source="{Binding DermImage}"/>-->
+                <ffimageloading:CachedImage
+                    x:Name="ImageView"    
+                    HeightRequest="300"
+                    HorizontalOptions="FillAndExpand" VerticalOptions="Center"
+                    Aspect="Fill"
+			        DownsampleToViewSize="true"
+			        Source = "{Binding DermImage}"
+                    >
+                    <ffimageloading:CachedImage.Transformations >
+                        <fftransformations:CropTransformation />
+                    </ffimageloading:CachedImage.Transformations>
+                </ffimageloading:CachedImage>
 
                 <Button
                     x:Name="btnCrop"
@@ -90,8 +99,9 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout>
-                                    <Label>
+                                <StackLayout
+                                    BackgroundColor="Blue">
+                                    <Label BackgroundColor="Yellow">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding Label}" FontAttributes="Bold"/>

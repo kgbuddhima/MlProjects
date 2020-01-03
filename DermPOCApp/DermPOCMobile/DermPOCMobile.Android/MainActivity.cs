@@ -35,6 +35,7 @@ namespace DermPOCMobile.Droid
             UserDialogs.Init(this);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            CachedImageRenderer.InitImageViewHandler();
 
             // http certificate configurations
             ServicePointManager.ServerCertificateValidationCallback += (o, cert, chain, errors) => true;
