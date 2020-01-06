@@ -7,15 +7,16 @@
              x:Class="DermPOCMobile.App">
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#3CCC48</Color>
-            <Color x:Key="Accent">#41E14F</Color>
-            <Color x:Key="BackgroundColorStyled">#EFFEF0</Color>
-            <Color x:Key="BorderColor">#07350A</Color>
-            <Color x:Key="LightTextColor">#3FAF48</Color>
+            <Color x:Key="Primary">#FDAB6F</Color>
+            <Color x:Key="Accent">#FE974B</Color>
+            <Color x:Key="BackgroundColorStyled">#FEE7D7</Color>
+            <Color x:Key="BorderColor">#FEC9A2</Color>
+            <Color x:Key="ButtonColor">#FDAB6F</Color>
+            <Color x:Key="LightTextColor">#FDAB6F</Color>
             <Color x:Key="TextColor">#000000</Color>
             <Color x:Key="TextColorWarning">#8F0903</Color>
-            <Color x:Key="TextColorHighlight">#025909</Color>
-            <Color x:Key="SeparatorLineColor">#025909</Color>
+            <Color x:Key="TextColorHighlight">#3B1A01</Color>
+            <Color x:Key="SeparatorLineColor">#543721</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
