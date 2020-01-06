@@ -43,34 +43,80 @@
                     HorizontalTextAlignment="Center"
                     Text="Upload your image to predict" 
                     TextColor="{DynamicResource LightTextColor}"/>
-  
+
                 <Frame
                     CornerRadius="30"
                     Padding="5"
                     BackgroundColor="{DynamicResource BorderColor}"
                     HasShadow="False">
-                    <ffimageloading:CachedImage
-                        x:Name="ImageView"    
-                        HeightRequest="250"
-                        HorizontalOptions="FillAndExpand" 
-                        VerticalOptions="Center"
-                        Aspect="Fill"
-			            DownsampleToViewSize="true"
-			            Source = "{Binding DermImage}"
-                        ErrorPlaceholder="EmptyImage.png"
-                        LoadingPlaceholder="EmptyImage.png"
-                        >
-                        <ffimageloading:CachedImage.Transformations >
-                            <fftransformations:CropTransformation/>
-                            <fftransformations:CornersTransformation 
+                    <StackLayout>
+                        <ffimageloading:CachedImage
+                            x:Name="ImageView"
+                            HeightRequest="250"
+                            HorizontalOptions="FillAndExpand" 
+                            VerticalOptions="Center"
+                            Aspect="Fill"
+			                DownsampleToViewSize="true"
+			                Source = "{Binding DermImage}"
+                            ErrorPlaceholder="EmptyImage.png"
+                            LoadingPlaceholder="EmptyImage.png">
+                            <ffimageloading:CachedImage.Transformations >
+                                <fftransformations:CropTransformation/>
+                                <fftransformations:CornersTransformation 
                                 BottomLeftCornerSize="10"
                                 BottomRightCornerSize="10"
                                 CornersTransformType="AllRounded"
                                 TopLeftCornerSize="10"
                                 TopRightCornerSize="10"/>
-
-                        </ffimageloading:CachedImage.Transformations>
-                    </ffimageloading:CachedImage>
+                            </ffimageloading:CachedImage.Transformations>
+                            <ffimageloading:CachedImage.Triggers>
+                                <DataTrigger
+                                    TargetType="ffimageloading:CachedImage"
+                                    Binding="{Binding IsImageSelected}" Value="True">
+                                    <Setter Property="IsVisible" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger
+                                    TargetType="ffimageloading:CachedImage"
+                                    Binding="{Binding IsImageSelected}" Value="False">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </ffimageloading:CachedImage.Triggers>
+                        </ffimageloading:CachedImage>
+                        <Grid
+                            HeightRequest="250"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill">
+                            <ffimageloading:CachedImage
+                                HeightRequest="50"
+                                HorizontalOptions="Center" 
+                                VerticalOptions="Center"
+                                Aspect="Fill"
+			                    DownsampleToViewSize="true"
+			                    Source = "EmptyImage.png">
+                                <ffimageloading:CachedImage.Transformations >
+                                    <fftransformations:CropTransformation/>
+                                    <fftransformations:CornersTransformation 
+                                BottomLeftCornerSize="10"
+                                BottomRightCornerSize="10"
+                                CornersTransformType="AllRounded"
+                                TopLeftCornerSize="10"
+                                TopRightCornerSize="10"/>
+                                </ffimageloading:CachedImage.Transformations>
+                            </ffimageloading:CachedImage>
+                            <Grid.Triggers>
+                                <DataTrigger
+                                    TargetType="Grid"
+                                    Binding="{Binding IsImageSelected}" Value="True">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger
+                                    TargetType="Grid"
+                                    Binding="{Binding IsImageSelected}" Value="False">
+                                    <Setter Property="IsVisible" Value="True"/>
+                                </DataTrigger>
+                            </Grid.Triggers>
+                        </Grid>
+                    </StackLayout>
                 </Frame>
 
                 <Label 

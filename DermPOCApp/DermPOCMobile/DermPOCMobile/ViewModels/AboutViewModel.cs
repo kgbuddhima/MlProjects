@@ -78,6 +78,17 @@ namespace DermPOCMobile.ViewModels
             }
         }
 
+        bool isImageSelected;
+        public bool IsImageSelected
+        {
+            get => isImageSelected;
+            set
+            {
+                isImageSelected = value;
+                OnPropertyChanged(nameof(IsImageSelected));
+            }
+        }
+
         bool isPredictionAvailable;
         public bool IsPredictionAvailable
         {
@@ -113,7 +124,7 @@ namespace DermPOCMobile.ViewModels
             PredictUsingApiCommand = new Command(async () => await PredictUsingApiAsync());
 
             IsNotProcessing = true;
-            DermImage = "EmptyImage.png";
+            //DermImage = "EmptyImage.png";
         }
 
         public ICommand OpenWebCommand { get; }
@@ -192,7 +203,7 @@ namespace DermPOCMobile.ViewModels
                 byte[] data = File.ReadAllBytes(imagePath);
                 Stream stream = new MemoryStream(data);
                 DermImageStream = stream;
-
+                IsImageSelected = true;
                 await SetBusyAsync(async () =>
                 {
                     IsBusy = true;
